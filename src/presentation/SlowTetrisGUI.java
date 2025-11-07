@@ -5,7 +5,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SlowTetrisGUI extends JFrame{
-	//Ciclo 0
+	//Atributes
+	private JMenuBar barraMenu;
+	private JMenu menu;
+	private JMenuItem iNuevo, iAbrir, iGuardar, iSalir; 
+
+	//Methods
 	public SlowTetrisGUI(){
 		super("SlowTetris");
 		prepareElements();
@@ -25,28 +30,98 @@ public class SlowTetrisGUI extends JFrame{
 	* Adjust the visual elements of the GUI
 	*/
 	private void prepareElements(){
-		//dimensionar
+		//dimensionar la pantalla
 		Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = screenDimension.width/4;
 		int height = screenDimension.height/4;
 		setSize(width, height);
 		//ubicar
 		setLocationRelativeTo(null);
-		//Ajustar el cierre para poder aplicar la ventana de confirmación
+		//ajustar el cierre para poder aplicar la ventana de confirmación
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		//preparación del menu
+		prepareElementsMenu();
+	}
+
+	/**
+	* Prepares the visual components for the menu
+	*/
+	private void prepareElementsMenu(){
+		//creación elementos
+		barraMenu = new JMenuBar();
+		menu = new JMenu("Juego");
+		iNuevo = new JMenuItem("Nuevo");
+		iAbrir = new JMenuItem("Abrir");
+		iGuardar = new JMenuItem("Guardar");
+		iSalir = new JMenuItem("Salir");
+		//organizar el menu
+		menu.add(iNuevo);
+		menu.addSeparator();
+		menu.add(iAbrir);
+		menu.add(iGuardar);
+		menu.addSeparator();
+		menu.add(iSalir);
+		//asignar el menu a la barra
+		barraMenu.add(menu);
+		//asignar la barra de menu
+		setJMenuBar(barraMenu);
 	}
 	
 	/**
-	* Prepares the listener and the actions related to them
+	* Prepares the listeneres and the actions related to them
 	*/
 	private void prepareActions(){
-		//Oyente para confirmar cierre
+		//oyente para confirmar cierre
 		addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e){
 				exit();
 			}
 		});
+		//acciones del menú
+		prepareActionsMenu();
+	}
+
+	/**
+	* prepares the listener and action related to them for the menu
+	*/
+	private void prepareActionsMenu(){
+		//oyente para salir del juego en el menú
+		iSalir.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				exit();
+			}
+		});
+		//oyente para abrir un juego en el archivo
+		iAbrir.addActionListener(new  ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				JFileChooser ventana = new JFileChooser();
+				ventana.setDialogTitle("abrir un juego de SlowTetris");
+				int resultado = ventana.showOpenDialog(SlowTetrisGUI.this);
+				//Aqui va la lógica de abrir el juego, que no se implementa en este laboratorio
+				JOptionPane.showMessageDialog(
+					SlowTetrisGUI.this,
+					"esta funcionalidad no está implementada"
+				);
+			}
+		});
+		//oyente para guardar el juego en un archivo
+		iGuardar.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				JFileChooser ventana = new JFileChooser();
+				ventana.setDialogTitle("Guardar o sobreescribir un archivo del juego");
+				int resultado = ventana.showSaveDialog(SlowTetrisGUI.this);
+				//Aqui va la lógica de guardar o sobreescribir el juego, que no se implementa en este laboratorio
+				JOptionPane.showMessageDialog(
+					SlowTetrisGUI.this,
+					"esta funcionalidad no está implementada"
+				);
+			}
+		});
+
 	}
 	
 	/**
