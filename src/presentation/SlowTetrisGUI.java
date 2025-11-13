@@ -1,4 +1,5 @@
 package presentation;
+import domain.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,9 +9,13 @@ public class SlowTetrisGUI extends JFrame{
 	//Atributes
 	private JMenuBar barraMenu;
 	private JMenu menu;
-	private JMenuItem iNuevo, iAbrir, iGuardar, iSalir; 
+	private JMenuItem iNuevo, iAbrir, iGuardar, iSalir;
+	private SlowTetrisBoardGUI tablero;
 
 	//Methods
+	/**
+	* Constructor of the SlowTetrisGUI
+	*/
 	public SlowTetrisGUI(){
 		super("SlowTetris");
 		prepareElements();
@@ -119,6 +124,27 @@ public class SlowTetrisGUI extends JFrame{
 					SlowTetrisGUI.this,
 					"esta funcionalidad no está implementada"
 				);
+			}
+		});
+		//oyente para crear un nuevo juego
+		iNuevo.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				try{
+					int ancho = Integer.parseInt(JOptionPane.showInputDialog(SlowTetrisGUI.this, "Ingrese el ancho:"));
+					int alto = Integer.parseInt(JOptionPane.showInputDialog(SlowTetrisGUI.this, "Ingrese el alto:"));
+					tablero = new SlowTetrisBoardGUI(alto, ancho);
+					tablero.setVisible(true);
+				}catch(STException ex){
+					//valores no válidos
+					JOptionPane.showMessageDialog(SlowTetrisGUI.this,
+					 ex.getMessage() + "\n" +
+					"4 < alto <= 25" + 
+					"4 < alto <= 15"
+					);
+				}catch(NumberFormatException ex){
+					JOptionPane.showMessageDialog(SlowTetrisGUI.this, "El formato no es válido, asegurese de ingresar números.");
+				}
 			}
 		});
 
