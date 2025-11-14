@@ -2,8 +2,8 @@ package domain;
 
 public class SlowTetris{
 	//Atributes
-	private char[][] prepareBoard;
-	private char[][] gameBoard;
+	private int[][] prepareBoard;
+	private int[][] gameBoard;
 
 	//Methods
 	/**
@@ -14,5 +14,20 @@ public class SlowTetris{
 	public SlowTetris(int height, int width){
 		
 	}
+	
+	/**
+	* Gives the gameBoard state
+	* return int[][]
+	*/
+	public int[][] getGameBoard(){
+		return gameBoard;
+	}
 
+	/**
+	* Gives the prepareBoard status
+	* return int[][]
+	*/
+	public int[][] getPrepareBoard(){
+		return prepareBoard;
+	}
 }

@@ -1,5 +1,5 @@
 package presentation;
-import domain.*;
+import domain.STException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,8 @@ public class SlowTetrisBoardGUI extends JFrame{
 	private JPanel panelBotones;
 	private JButton bOeste, bEste, bRotar, bSoltar;
 
-	private JPanel tableroPreparacion;
-	private JPanel tableroJuego;
+	private BoardPanel tableroPreparacion;
+	private BoardPanel tableroJuego;
 
 	//Methods
 	/**
@@ -27,9 +27,9 @@ public class SlowTetrisBoardGUI extends JFrame{
 	*/
 	public SlowTetrisBoardGUI(int height, int width) throws STException{
 		super("SlowTetrisBoard");
-		if((height > 4 && height <= 25) && (width >= 4 && width <= 15)){
+		if((height > 10 && height <= 20) && (width >= 5 && width <= 10)){
 			gameStatus = new SlowTetris(height, width);
-			prepareElementsBoard();
+			prepareElementsBoard(height, width);
 			prepareActions();
 		}else{
 			throw new STException(STException.TAMANO_TABLERO_NO_VALIDO);
@@ -86,13 +86,19 @@ public class SlowTetrisBoardGUI extends JFrame{
 
 	/**
 	* Prepares the visual state of both boards(preparation/game)
+	* @param int height
+	* @param int width
 	*/
-	private void prepareBoards(){
-		JPanel panelCentral = new JPanel(new GridLayout(1, 2, 10, 10));
-		tableroPreparacion = new JPanel();
-        	tableroPreparacion.setBackground(Color.LIGHT_GRAY);
-		tableroJuego = new JPanel();
-        	tableroJuego.setBackground(Color.WHITE);
+	private void prepareBoards(int height, int width){
+		//Contenedor de los tableros
+		JPanel panelCentral = new JPanel(new GridLayout(2, 1, 10, 10));
+
+		//Tableros
+		tableroPreparacion = new BoardPanel(() -> gameStatus.getPrepareBoard());
+		tableroPreparacion.setBorder(BorderFactory.createTitledBorder("Preparación"));
+		
+		tableroJuego = new BoardPanel(()  -> gameStatus.getGameBoard());
+		tableroJuego.setBorder(BorderFactory.createTitledBorder("Juego"));
 
 		//justamos ubicación de los tableros
 		panelCentral.add(tableroPreparacion);
@@ -108,12 +114,47 @@ public class SlowTetrisBoardGUI extends JFrame{
 	* Updates the boards of the SLowTerisBoardsGUI
 	*/
 	public void refresh(){
+		tableroPreparacion.repaint();
+		tableroJuego.repaint();
 	}
 
 	/**
 	* Prepares the listeners and the actions related to them
 	*/
 	private void prepareActions(){
+		//oyente para confirmar cierre
+		addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e){
+				exit();
+			}
+		});
+		//acciones del menú
+		prepareActionsMenu();
+	}
+
+	/**
+	* Prepares the listeners and actions related to them that concern to the menu
+	*/
+	public void prepareActionsMenu(){
+		
+	}
+
+	/**
+	* Closes the board game
+	*/
+	private void exit(){
+		int salir = JOptionPane.showConfirmDialog(
+			this,
+			"¿Quiere salir de la app?",
+			"Confirmar salida",
+			JOptionPane.YES_NO_OPTION
+		);
+		if(salir == JOptionPane.YES_OPTION){
+			System.exit(0);
+		}
+	}
+
 	}
 
 }

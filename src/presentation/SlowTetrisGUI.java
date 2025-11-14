@@ -139,8 +139,8 @@ public class SlowTetrisGUI extends JFrame{
 					//valores no válidos
 					JOptionPane.showMessageDialog(SlowTetrisGUI.this,
 					 ex.getMessage() + "\n" +
-					"4 < alto <= 25" + 
-					"4 < alto <= 15"
+					"10 < alto <= 20" + 
+					"5 < ancho <= 10"
 					);
 				}catch(NumberFormatException ex){
 					JOptionPane.showMessageDialog(SlowTetrisGUI.this, "El formato no es válido, asegurese de ingresar números.");
